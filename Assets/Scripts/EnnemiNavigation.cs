@@ -11,6 +11,7 @@ public class EnnemiNavigation : MonoBehaviour
     [SerializeField] GroundDetector GroundCheck;
 
     [SerializeField] Rigidbody Rigidbody;
+    [SerializeField] Collider Collider;
     [SerializeField] bool Stun;
     [SerializeField] bool CanMove = true;
 
@@ -56,6 +57,8 @@ public class EnnemiNavigation : MonoBehaviour
         Stun = true;
         CanMove = false;
 
+        Collider.isTrigger = true;
+
         StartCoroutine(StunTime(stunTime));
     }
 
@@ -67,11 +70,14 @@ public class EnnemiNavigation : MonoBehaviour
             CanMove = true;
             Rigidbody.velocity = Vector3.zero;
 
+            Collider.isTrigger = false;
+
             PathUpdate();
         }
         else
         {
             Stun = false;
+            Collider.isTrigger = false;
         }
     }
 
@@ -86,5 +92,15 @@ public class EnnemiNavigation : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         PathUpdate();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer != 6 && other.gameObject.layer != 7)
+        {
+            Debug.Log("test");
+            //Rigidbody.velocity = Vector3.zero;
+            Collider.isTrigger = false;
+        }
     }
 }

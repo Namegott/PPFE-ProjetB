@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
+    [SerializeField] float JumpForce;
     [SerializeField] StanceType Stance;
     [SerializeField] GroundDetector Grounded;
     [SerializeField] Rigidbody Rb;
@@ -57,7 +58,7 @@ public class CombatManager : MonoBehaviour
             
             Debug.Log("jump");
             Grounded.GroundedSwitch(false);
-            Rb.AddForce(new Vector3(0, 5, 0), ForceMode.Impulse);
+            Rb.AddForce(new Vector3(0, JumpForce, 0), ForceMode.Impulse);
             StanceSwitch(StanceType.Jump);
         }
     }
