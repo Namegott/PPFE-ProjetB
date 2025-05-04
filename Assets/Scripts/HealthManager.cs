@@ -7,6 +7,9 @@ public class HealthManager : MonoBehaviour
 {
     [SerializeField] int Health;
     [SerializeField] int MaxHealth;
+    [SerializeField] bool BlockAll;
+    [SerializeField] bool BlockHalf;
+    [SerializeField] Coroutine CrBlockTime;
 
     [SerializeField] bool Invincibility;
     [SerializeField] float InvincibilityTime = 0.5f;
@@ -29,14 +32,66 @@ public class HealthManager : MonoBehaviour
     {
         if (!Invincibility) 
         {
-            Health -= damage;
-            DamageGet.text = damage.ToString();
-            StartCoroutine(InvicibilityTimer());
+            if (BlockAll)
+            {
+
+            }
+            else if (BlockHalf) 
+            {
+                Health -= damage / 2;
+                DamageGet.text = damage.ToString();
+                StartCoroutine(InvicibilityTimer());
+            }
+            else
+            {
+                Health -= damage;
+                DamageGet.text = damage.ToString();
+                StartCoroutine(InvicibilityTimer());
+            }
         }
         
         if (Health <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    public void BlockStart(float durationBlockAll)
+    {
+        BlockAll = true;
+        CrBlockTime = StartCoroutine(BlockTime(durationBlockAll));
+    }
+
+    public void BlockEnd()
+    {
+        StopCoroutine(CrBlockTime);
+        BlockAll = false;
+        BlockHalf = false;
+    }
+
+    public string GetBlock()
+    {
+        if (BlockAll)
+        {
+            return "All";
+        }
+        else if (BlockHalf)
+        {
+            return "Half";
+        }
+        else
+        {
+            return "none";
+        }
+    }
+
+    IEnumerator BlockTime(float durationBlockAll)
+    {
+        yield return new WaitForSeconds(durationBlockAll);
+        if (BlockAll)
+        {
+            BlockAll = false;
+            BlockHalf = true;
         }
     }
 

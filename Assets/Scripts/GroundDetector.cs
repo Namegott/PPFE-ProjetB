@@ -23,9 +23,14 @@ public class GroundDetector : MonoBehaviour
             GroundedSwitch(true);
             if (Combat != null) 
             {
-                Combat.StanceSwitch(StanceType.Base);
+                Combat.Base();
             }
         }
+    }
+
+    void OnTriggerStay()
+    {
+        
     }
 
     void OnTriggerExit()
