@@ -50,7 +50,7 @@ public class MovementManager : MonoBehaviour
         {
             IsMoving = true;
 
-            Debug.Log(Direction.x);
+            //Debug.Log(Direction.x);
 
             if (Direction.x > 0.1)
             {

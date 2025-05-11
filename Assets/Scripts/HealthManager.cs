@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
@@ -10,10 +11,12 @@ public class HealthManager : MonoBehaviour
     [SerializeField] bool BlockAll;
     [SerializeField] bool BlockHalf;
     [SerializeField] Coroutine CrBlockTime;
+    [SerializeField] Image BlockInfo;
 
     [SerializeField] bool Invincibility;
     [SerializeField] float InvincibilityTime = 0.5f;
     [SerializeField] TextMeshPro DamageGet;
+    [SerializeField] Image HpBar;
     
     void Start()
     {
@@ -40,12 +43,14 @@ public class HealthManager : MonoBehaviour
             {
                 Health -= damage / 2;
                 DamageGet.text = damage.ToString();
+                UpdateLife();
                 StartCoroutine(InvicibilityTimer());
             }
             else
             {
                 Health -= damage;
                 DamageGet.text = damage.ToString();
+                UpdateLife();
                 StartCoroutine(InvicibilityTimer());
             }
         }
@@ -56,15 +61,23 @@ public class HealthManager : MonoBehaviour
         }
     }
 
+    private void UpdateLife()
+    {
+        float PercentHelth = Health / MaxHealth;
+        HpBar.transform.localScale = new Vector3(PercentHelth, 1, 1);
+    }
+
     public void BlockStart(float durationBlockAll)
     {
         BlockAll = true;
+        BlockInfo.enabled = true;
         CrBlockTime = StartCoroutine(BlockTime(durationBlockAll));
     }
 
     public void BlockEnd()
     {
         StopCoroutine(CrBlockTime);
+        BlockInfo.enabled = false;
         BlockAll = false;
         BlockHalf = false;
     }
@@ -90,6 +103,7 @@ public class HealthManager : MonoBehaviour
         yield return new WaitForSeconds(durationBlockAll);
         if (BlockAll)
         {
+            BlockInfo.enabled = false;
             BlockAll = false;
             BlockHalf = true;
         }
