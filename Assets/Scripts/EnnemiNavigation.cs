@@ -27,7 +27,7 @@ public class EnnemiNavigation : MonoBehaviour
 
     void Update()
     {
-        Velo = Rigidbody.velocity;
+        Velo = Rigidbody.velocity; //debug
 
         if (!Stun && CanMove)
         {

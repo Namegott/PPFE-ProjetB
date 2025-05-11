@@ -1,30 +1,38 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnnemiPoulpeManager : MonoBehaviour
+public class EnnemiPoulpeManager : EnnemiBase
 {
-    [SerializeField] GameObject Player;
     [SerializeField] float Distance;
     [SerializeField] float DistanceAttackMin;
     [SerializeField] float DistanceAttackMax;
-
-    [SerializeField] GameObject Projectile;
-    [SerializeField] float ImpactDuration;
-    [SerializeField] float ProjDuration;
 
     [SerializeField] float DelaySetupMin;
     [SerializeField] float DelaySetupMax;
     [SerializeField] float DelayPreAttack;
     [SerializeField] float DelayPostAttack;
 
+    [SerializeField] bool NeedMove;
+    [SerializeField] GameObject MoveDestination;
+
+
+    [Header("Projectile")]
+    [SerializeField] GameObject Projectile;
+    [SerializeField] float ImpactDuration;
+    [SerializeField] float ProjDuration;
+
+    [Header("Visual")]
     [SerializeField] GameObject[] Visuals;
     [SerializeField] GameObject VisualParent;
     [SerializeField] bool RotateTorward;
 
+
     private void Start()
     {
         Player = FindObjectOfType<MovementManager>().gameObject;
+        Rigidbody = GetComponent<Rigidbody>();
+        GroundCheck = GetComponentInChildren<GroundDetector>();
+
         StartCoroutine(SetupStartDelay());
     }
 
@@ -32,7 +40,35 @@ public class EnnemiPoulpeManager : MonoBehaviour
     {
         if (RotateTorward)
         {
-            VisualParent.transform.rotation = Quaternion.LookRotation((Player.transform.position - transform.position) * -1);
+            Quaternion rotaQ = Quaternion.LookRotation((Player.transform.position - transform.position) * -1);
+            if (NeedMove)
+            {
+                Vector3 rotaV = rotaQ.eulerAngles;
+                //Debug.Log(rotaV);
+
+                rotaQ = Quaternion.Euler(rotaV);
+            }
+            VisualParent.transform.rotation = rotaQ;
+        }
+
+        if (NeedMove)
+        {
+            if (Destination.transform.position != transform.position)
+            {
+                if (!Stun && CanMove)
+                {
+                    if (Direction != Destination.transform.position - transform.position) //update the path
+                    {
+                        Direction = Destination.transform.position - transform.position;
+                    }
+
+                    Rigidbody.velocity = Direction.normalized * Speed;
+                }
+                else if (!Stun && GroundCheck.GetGrounded() && !CanMove)
+                {
+                    CanMove = true;
+                }
+            }
         }
     }
 
@@ -40,18 +76,55 @@ public class EnnemiPoulpeManager : MonoBehaviour
     {
         Distance = Vector3.Distance(Player.transform.position, transform.position);
         Debug.Log(Distance);
-        if (Distance > DistanceAttackMin && Distance < DistanceAttackMax)
+        if (Distance >= DistanceAttackMin && Distance <= DistanceAttackMax)
         {
             StartCoroutine(Attack());
         }
         else if (Distance < DistanceAttackMin) //too close
         {
-            //ChangePosition(Vector3.RotateTowards(transform.position, Player.transform.position, 1, 0));
+            Vector3 target = Player.transform.position - transform.position;
+            Destination = Instantiate(MoveDestination, target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position, Quaternion.identity);
+
+            Direction = Destination.transform.position - transform.position;
+            
+            NeedMove = true;
+
+            //visual
+            ChangeVisual(1);
+            RotateTorward = true;
         }
         else if (Distance > DistanceAttackMax) //too far
         {
+            Vector3 target = Player.transform.position - transform.position;
+            Destination = Instantiate(MoveDestination, target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position, Quaternion.identity);
 
+            Direction = Destination.transform.position - transform.position;
+            
+            NeedMove = true;
+
+            //visual
+            ChangeVisual(1);
+            RotateTorward = true;
         }
+    }
+
+    public override void EndMove()
+    {
+        //visual
+        ChangeVisual(0);
+        RotateTorward = false;
+        
+        NeedMove = false;
+        Direction = new Vector3(0, 0, 0);
+        Destination = null;
+        StartCoroutine(Attack());
+    }
+    
+    public override void EndStun()
+    {
+        base.EndStun();
+
+        Setup();
     }
 
     void ChangeVisual(int visualNumber)

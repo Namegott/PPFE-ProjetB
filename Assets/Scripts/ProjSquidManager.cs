@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -43,8 +42,8 @@ public class ProjSquidManager : MonoBehaviour
         ScalingPerSecond = scaleAim / ProjDuration;
 
         //setup impact
-        ImpactIndicator.transform.position = transform.position + player;
-        HitBox.transform.position = transform.position + player;
+        ImpactIndicator.transform.position = new Vector3(transform.position.x + player.x, 0, transform.position.z + player.z);
+        HitBox.transform.position = new Vector3(transform.position.x + player.x, 0, transform.position.z + player.z);
 
         //get middle point of spline
         float middleX = squid.x + ((player.x - squid.x) / 2);

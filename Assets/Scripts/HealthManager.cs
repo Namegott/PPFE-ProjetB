@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
@@ -58,6 +57,7 @@ public class HealthManager : MonoBehaviour
         if (Health <= 0)
         {
             Destroy(gameObject);
+            Debug.Log("ded");
         }
     }
 
