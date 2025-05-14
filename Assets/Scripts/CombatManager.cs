@@ -21,44 +21,48 @@ public class CombatManager : MonoBehaviour
     [SerializeField] bool CanAttack = true;
     [SerializeField] VisualState VisualState = VisualState.None;
 
+    public bool GamePause;
     
     void Update()
     {
-        if (Input.GetButtonDown("Punch"))
+        if (!GamePause)
         {
-            Punch();
-        }
-
-        if (Input.GetButtonDown("Uppercut"))
-        {
-            Uppercut();
-        }
-
-        if (Input.GetButtonDown("Slide"))
-        {
-             Slide();
-        }
-
-        if (Input.GetButtonDown("Defense"))
-        {
-            if (CanBlock)
+            if (Input.GetButtonDown("Punch"))
             {
-                Debug.Log("Def");
-
-                HealthManager.BlockStart(DurationBlockAll);
-                VisualState = VisualState.Block;
+                Punch();
             }
-        }
-        if (Input.GetButtonUp("Defense"))
-        {
-            if (CanBlock)
-            {
-                Debug.Log("plus Def");
-                CanBlock = false;
 
-                StartCoroutine(BlockCooldown(CdBlock));
-                HealthManager.BlockEnd();
-                VisualState = VisualState.None;
+            if (Input.GetButtonDown("Uppercut"))
+            {
+                Uppercut();
+            }
+
+            if (Input.GetButtonDown("Slide"))
+            {
+                 Slide();
+            }
+
+            if (Input.GetButtonDown("Defense"))
+            {
+                if (CanBlock)
+                {
+                    //Debug.Log("Def");
+
+                    HealthManager.BlockStart(DurationBlockAll);
+                    VisualState = VisualState.Block;
+                }
+            }
+            if (Input.GetButtonUp("Defense"))
+            {
+                if (CanBlock)
+                {
+                    //Debug.Log("plus Def");
+                    CanBlock = false;
+
+                    StartCoroutine(BlockCooldown(CdBlock));
+                    HealthManager.BlockEnd();
+                    VisualState = VisualState.None;
+                }
             }
         }
     }
@@ -105,7 +109,7 @@ public class CombatManager : MonoBehaviour
 
     void Punch()
     {
-        Debug.Log("punch");
+        //Debug.Log("punch");
         if (CanAttack)
         {
             CanAttack = false;

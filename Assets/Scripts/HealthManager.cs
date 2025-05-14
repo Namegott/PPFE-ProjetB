@@ -41,15 +41,21 @@ public class HealthManager : MonoBehaviour
             else if (BlockHalf) 
             {
                 Health -= damage / 2;
-                DamageGet.text = damage.ToString();
-                UpdateLife();
+                //DamageGet.text = damage.ToString();
+                if (gameObject.layer == 7)
+                {
+                    UpdateLifeHUD();
+                }
                 StartCoroutine(InvicibilityTimer());
             }
             else
             {
                 Health -= damage;
-                DamageGet.text = damage.ToString();
-                UpdateLife();
+                //DamageGet.text = damage.ToString();
+                if (gameObject.layer == 7)
+                {
+                    UpdateLifeHUD();
+                }
                 StartCoroutine(InvicibilityTimer());
             }
         }
@@ -61,9 +67,9 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    private void UpdateLife()
+    private void UpdateLifeHUD()
     {
-        float PercentHelth = Health / MaxHealth;
+        float PercentHelth = (float)Health / (float)MaxHealth;
         HpBar.transform.localScale = new Vector3(PercentHelth, 1, 1);
     }
 

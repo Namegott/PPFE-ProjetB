@@ -14,10 +14,10 @@ public class DamageDealer : MonoBehaviour
         int damage = Random.Range(AttackDamageMin, AttackDamageMax);
         hitTarget.gameObject.GetComponent<HealthManager>().Damage(damage);
 
-        EnnemiNavigation nav = hitTarget.gameObject.GetComponent<EnnemiNavigation>();
-        if (nav != null)
+        EnnemiBase ennemi = hitTarget.gameObject.GetComponent<EnnemiBase>();
+        if (ennemi != null)
         {
-            nav.StunEffect(StunDuration);
+            ennemi.StunEffect(StunDuration);
             hitTarget.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
 

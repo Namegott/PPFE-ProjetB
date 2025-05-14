@@ -98,7 +98,7 @@ public class EnnemiNavigation : MonoBehaviour
     {
         if (other.gameObject.layer != 6 && other.gameObject.layer != 7)
         {
-            Debug.Log("test");
+            //Debug.Log("test");
             //Rigidbody.velocity = Vector3.zero;
             Collider.isTrigger = false;
         }

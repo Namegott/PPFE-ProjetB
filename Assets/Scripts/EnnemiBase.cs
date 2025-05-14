@@ -71,13 +71,13 @@ public class EnnemiBase : MonoBehaviour
     {
         if (other.gameObject.layer != 6 && other.gameObject.layer != 7)
         {
-            Debug.Log("test");
+            //Debug.Log("test");
             //Rigidbody.velocity = Vector3.zero;
             Collider.isTrigger = false;
         }
         if (other.gameObject == Destination)
         {
-            Debug.Log("aaaa");
+            //Debug.Log("aaaa");
             EndMove();
             Destroy(other.gameObject);
         }

@@ -75,7 +75,7 @@ public class EnnemiPoulpeManager : EnnemiBase
     void Setup()
     {
         Distance = Vector3.Distance(Player.transform.position, transform.position);
-        Debug.Log(Distance);
+        //Debug.Log(Distance);
         if (Distance >= DistanceAttackMin && Distance <= DistanceAttackMax)
         {
             StartCoroutine(Attack());
@@ -83,7 +83,7 @@ public class EnnemiPoulpeManager : EnnemiBase
         else if (Distance < DistanceAttackMin) //too close
         {
             Vector3 target = Player.transform.position - transform.position;
-            target = target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position;
+            target = target.normalized * (DistanceAttackMax - DistanceAttackMin) * -1 + transform.position;
             target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));
 
             Destination = Instantiate(MoveDestination, target, Quaternion.identity);
@@ -160,7 +160,7 @@ public class EnnemiPoulpeManager : EnnemiBase
 
         ChangeVisual(0);
         VisualParent.transform.rotation = Quaternion.Euler(0, 0, 0);
-        Debug.Log("idle : " + VisualParent.transform.rotation.eulerAngles);
+        //Debug.Log("idle : " + VisualParent.transform.rotation.eulerAngles);
         yield return new WaitForSeconds(DelayPostAttack);
 
         Setup();

@@ -17,7 +17,7 @@ public class GroundDetector : MonoBehaviour
 
     void OnTriggerEnter()
     {
-        Debug.Log("sol");
+        //Debug.Log("sol");
         if (!GetGrounded())
         {
             GroundedSwitch(true);

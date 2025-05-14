@@ -8,6 +8,8 @@ public class MovementManager : MonoBehaviour
     [SerializeField] float Speed = 5;
     [SerializeField] Vector3 Direction;
 
+    public bool GamePause;
+
     bool IsMoving;
     bool MovingLeft;
 
@@ -18,7 +20,10 @@ public class MovementManager : MonoBehaviour
 
     void Update()
     {
-        Movement();
+        if (!GamePause)
+        {
+            Movement();
+        }
     }
 
     void Movement()

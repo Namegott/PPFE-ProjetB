@@ -50,7 +50,7 @@ public class CameraManager : MonoBehaviour
 
     IEnumerator DelayEnd()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
         CameraMovement = false;
     }
 }
