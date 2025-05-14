@@ -83,8 +83,10 @@ public class EnnemiPoulpeManager : EnnemiBase
         else if (Distance < DistanceAttackMin) //too close
         {
             Vector3 target = Player.transform.position - transform.position;
-            Destination = Instantiate(MoveDestination, target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position, Quaternion.identity);
+            target = target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position;
+            target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));
 
+            Destination = Instantiate(MoveDestination, target, Quaternion.identity);
             Direction = Destination.transform.position - transform.position;
             
             NeedMove = true;
