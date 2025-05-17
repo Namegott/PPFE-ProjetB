@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
-public class EnnemiPoulpeManager : EnnemiBase
+public class EnnemiCentaurManager : EnnemiBase
 {
     [SerializeField] float Distance;
     [SerializeField] float DistanceAttackMin;
@@ -9,23 +11,21 @@ public class EnnemiPoulpeManager : EnnemiBase
 
     [SerializeField] float DelaySetupMin;
     [SerializeField] float DelaySetupMax;
-    [SerializeField] float DelayPreAttack;
+    [SerializeField] float LoadAttackTime;
+    [SerializeField] float DelayPostLoad;
     [SerializeField] float DelayPostAttack;
+
+    [SerializeField] GameObject AttackHitbox;
+    [SerializeField] float AttackSpeed;
+    [SerializeField] bool Attack;
 
     [SerializeField] bool NeedMove;
     [SerializeField] GameObject MoveDestination;
-
-
-    [Header("Projectile")]
-    [SerializeField] GameObject Projectile;
-    [SerializeField] float ImpactDuration;
-    [SerializeField] float ProjDuration;
 
     [Header("Visual")]
     [SerializeField] GameObject[] Visuals;
     [SerializeField] GameObject VisualParent;
     [SerializeField] bool RotateTorward;
-
 
     private void Start()
     {
@@ -40,7 +40,7 @@ public class EnnemiPoulpeManager : EnnemiBase
     {
         if (RotateTorward)
         {
-            Quaternion rotaQ = Quaternion.LookRotation((Player.transform.position - transform.position) * -1);
+            Quaternion rotaQ = Quaternion.LookRotation(Player.transform.position - transform.position);
             if (NeedMove)
             {
                 Vector3 rotaV = rotaQ.eulerAngles;
@@ -48,10 +48,14 @@ public class EnnemiPoulpeManager : EnnemiBase
 
                 rotaQ = Quaternion.Euler(rotaV);
             }
-            VisualParent.transform.rotation = rotaQ;
+            transform.rotation = rotaQ;
         }
 
-        if (NeedMove)
+        if (Attack)
+        {
+            Rigidbody.velocity = Direction.normalized * AttackSpeed;
+        }
+        else if (NeedMove)
         {
             if (Destination.transform.position != transform.position)
             {
@@ -61,7 +65,6 @@ public class EnnemiPoulpeManager : EnnemiBase
                     {
                         Direction = Destination.transform.position - transform.position;
                     }
-
                     Rigidbody.velocity = Direction.normalized * Speed;
                 }
                 else if (!Stun && GroundCheck.GetGrounded() && !CanMove)
@@ -75,20 +78,21 @@ public class EnnemiPoulpeManager : EnnemiBase
     void Setup()
     {
         Distance = Vector3.Distance(Player.transform.position, transform.position);
-        //Debug.Log(Distance);
+
         if (Distance >= DistanceAttackMin && Distance <= DistanceAttackMax)
         {
-            StartCoroutine(Attack());
+            StartCoroutine(LoadAttack());
         }
         else if (Distance < DistanceAttackMin) //too close
         {
+            Debug.Log("move far");
             Vector3 target = Player.transform.position - transform.position;
             target = target.normalized * (DistanceAttackMax - DistanceAttackMin) * -1 + transform.position;
-            target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));
+            target.z = Mathf.Clamp(target.z, 1, 19.5f);
 
             Destination = Instantiate(MoveDestination, target, Quaternion.identity);
             Direction = Destination.transform.position - transform.position;
-            
+
             NeedMove = true;
 
             //visual
@@ -97,13 +101,17 @@ public class EnnemiPoulpeManager : EnnemiBase
         }
         else if (Distance > DistanceAttackMax) //too far
         {
+            Debug.Log("move close");
             Vector3 target = Player.transform.position - transform.position;
+            target = transform.position + target.normalized * (Distance - DistanceAttackMax);
+            target.z = Mathf.Clamp(target.z, 1, 19.5f);
+                /*Player.transform.position - transform.position;
             target = target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position;
-            target.x = Mathf.Clamp(target.z, 1, 19.5f);
-            Destination = Instantiate(MoveDestination, target , Quaternion.identity);
+            target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));*/
 
+            Destination = Instantiate(MoveDestination, target, Quaternion.identity);
             Direction = Destination.transform.position - transform.position;
-            
+
             NeedMove = true;
 
             //visual
@@ -112,23 +120,38 @@ public class EnnemiPoulpeManager : EnnemiBase
         }
     }
 
-    public override void EndMove()
-    {
-        //visual
-        ChangeVisual(0);
-        RotateTorward = false;
-        
-        NeedMove = false;
-        Direction = new Vector3(0, 0, 0);
-        Destination = null;
-        StartCoroutine(Attack());
-    }
-    
+
     public override void EndStun()
     {
         base.EndStun();
 
         Setup();
+    }
+
+    public override void EndMove()
+    {
+        Debug.Log("aaa");
+        if (Attack)
+        {
+            Debug.Log("bbb");
+            GetComponent<BoxCollider>().isTrigger = false;
+            Rigidbody.useGravity = true;
+            Attack = false;
+            StartCoroutine(PostAttack());
+        }
+        else if (NeedMove)
+        {
+            Debug.Log("end move");
+            //visual
+            ChangeVisual(0);
+            RotateTorward = false;
+
+            NeedMove = false;
+            Direction = new Vector3(0, 0, 0);
+            Destination = null;
+            Setup();
+        }
+        
     }
 
     void ChangeVisual(int visualNumber)
@@ -143,28 +166,45 @@ public class EnnemiPoulpeManager : EnnemiBase
         }
     }
 
+    IEnumerator LoadAttack()
+    {
+        Debug.Log("attack");
+        ChangeVisual(2);
+        RotateTorward = true;
+        yield return new WaitForSeconds(LoadAttackTime);
+
+        RotateTorward = false;
+        ChangeVisual(3);
+        yield return new WaitForSeconds(DelayPostLoad);
+
+        AttackHitbox.SetActive(true);
+
+        GetComponent<BoxCollider>().isTrigger = true;
+        Rigidbody.useGravity = false;
+
+        //movement
+        Vector3 target = transform.position + (transform.forward * (DistanceAttackMax * 2));
+        target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));
+
+        Destination = Instantiate(MoveDestination, target, Quaternion.identity);
+        Direction = Destination.transform.position - transform.position;
+
+        Attack = true;
+    }
+
+    IEnumerator PostAttack()
+    {
+        Debug.Log("end attack");
+        ChangeVisual(0);
+        AttackHitbox.SetActive(false);
+        yield return new WaitForSeconds(DelayPostAttack);
+
+        Setup();
+    }
+
     IEnumerator SetupStartDelay()
     {
         yield return new WaitForSeconds(Random.Range(DelaySetupMin, DelaySetupMax));
-        Setup();
-    }
-    
-    IEnumerator Attack()
-    {
-        ChangeVisual(2);
-        RotateTorward = true;
-        yield return new WaitForSeconds(DelayPreAttack);
-
-        RotateTorward = false;
-        GameObject proj = Instantiate(Projectile);
-        proj.GetComponent<ProjSquidManager>().Setup(transform.position, Player.transform.position, ImpactDuration, ProjDuration);
-        yield return new WaitForSeconds(ProjDuration + ImpactDuration);
-
-        ChangeVisual(0);
-        VisualParent.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //Debug.Log("idle : " + VisualParent.transform.rotation.eulerAngles);
-        yield return new WaitForSeconds(DelayPostAttack);
-
         Setup();
     }
 }

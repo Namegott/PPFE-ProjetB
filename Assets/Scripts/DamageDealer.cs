@@ -8,6 +8,12 @@ public class DamageDealer : MonoBehaviour
 
     [SerializeField] Vector3 PropulsionForce;
 
+    [SerializeField] ScoreManager ScoreManager;
+
+    private void Start()
+    {
+        ScoreManager = FindAnyObjectByType<ScoreManager>();
+    }
     void OnTriggerEnter(Collider hitTarget)
     {
         //applique les degats
@@ -19,6 +25,10 @@ public class DamageDealer : MonoBehaviour
         {
             ennemi.StunEffect(StunDuration);
             hitTarget.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            if (gameObject.layer == 7)
+            {
+                ScoreManager.AddCombo();
+            }
         }
 
         // applique des effets de knockback

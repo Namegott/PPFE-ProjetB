@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 5351841854038054359}
   - component: {fileID: 2506894918740199698}
   - component: {fileID: 7412948340383386395}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Squid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,6 +306,8 @@ MonoBehaviour:
   InvincibilityTime: 0
   DamageGet: {fileID: 0}
   HpBar: {fileID: 0}
+  ScoreManager: {fileID: 0}
+  ScoreGain: 50
 --- !u!114 &7412948340383386395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,7 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   Direction: {x: 0, y: 0, z: 0}
-  Speed: 6
+  Speed: 8
   Velo: {x: 0, y: 0, z: 0}
   GroundCheck: {fileID: 1052354704785972906}
   Rigidbody: {fileID: 0}

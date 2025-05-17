@@ -43,8 +43,6 @@ public class PauseManager : MonoBehaviour
                 Unpause();
             }
         }
-
-        
     }
 
     public void Pause()

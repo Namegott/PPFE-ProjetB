@@ -16,10 +16,19 @@ public class HealthManager : MonoBehaviour
     [SerializeField] float InvincibilityTime = 0.5f;
     [SerializeField] TextMeshPro DamageGet;
     [SerializeField] Image HpBar;
-    
+
+    [SerializeField] ScoreManager ScoreManager;
+    [SerializeField] int ScoreGain;
+
+    public int GetHealth()
+    { return Health; }
+    public int GetMaxHealth() 
+    { return MaxHealth;}
+
     void Start()
     {
         Health = MaxHealth;
+        ScoreManager = FindAnyObjectByType<ScoreManager>();
     }
 
     // Permet de setup les hp de chacun
@@ -44,6 +53,7 @@ public class HealthManager : MonoBehaviour
                 //DamageGet.text = damage.ToString();
                 if (gameObject.layer == 7)
                 {
+                    ScoreManager.EndCombo();
                     UpdateLifeHUD();
                 }
                 StartCoroutine(InvicibilityTimer());
@@ -54,6 +64,7 @@ public class HealthManager : MonoBehaviour
                 //DamageGet.text = damage.ToString();
                 if (gameObject.layer == 7)
                 {
+                    ScoreManager.EndCombo();
                     UpdateLifeHUD();
                 }
                 StartCoroutine(InvicibilityTimer());
@@ -62,9 +73,28 @@ public class HealthManager : MonoBehaviour
         
         if (Health <= 0)
         {
-            Destroy(gameObject);
-            Debug.Log("ded");
+            Debug.Log("health = 0");
+            if (gameObject.layer == 6)
+            {
+                ScoreManager.AddKillScore(ScoreGain);
+                DeathEnnmi();
+            }
+            if (gameObject.layer == 7)
+            {
+                DeathPlayer();
+            }
         }
+    }
+
+    void DeathPlayer()
+    {
+        FindAnyObjectByType<Finish>().FinishGame("YOU DIED !");
+        Debug.Log("ded");
+    }
+
+    void DeathEnnmi()
+    {
+        Destroy(gameObject);
     }
 
     private void UpdateLifeHUD()

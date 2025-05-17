@@ -16,16 +16,10 @@ public class EnnemiBase : MonoBehaviour
     [SerializeField] protected bool CanMove = true;
 
     [SerializeField] protected GameObject Destination;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject GetDestination()
     {
-        
+        return Destination;
     }
 
     public virtual void StunEffect(float stunTime)
@@ -69,17 +63,18 @@ public class EnnemiBase : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        //Debug.Log(other.gameObject + " / " + Destination);
         if (other.gameObject.layer != 6 && other.gameObject.layer != 7)
         {
             //Debug.Log("test");
             //Rigidbody.velocity = Vector3.zero;
             Collider.isTrigger = false;
         }
-        if (other.gameObject == Destination)
+        /*if (other.gameObject == Destination)
         {
-            //Debug.Log("aaaa");
+            Debug.Log("aaaa");
             EndMove();
             Destroy(other.gameObject);
-        }
+        }*/
     }
 }
