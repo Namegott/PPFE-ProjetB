@@ -24,6 +24,15 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    public void ForceStopCam()
+    {
+        if (DelayCoRoutine != null)
+        {
+            StopCoroutine(DelayCoRoutine);
+        }
+        CameraMovement = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 7 && other.gameObject.tag == "Player")

@@ -7,6 +7,23 @@ public class Spawner : MonoBehaviour
     public Transform[] SpawnPositions;
     bool DoOnce = true;
 
+    private void Start() //strangely not working
+    {
+        foreach (Transform t in SpawnPositions)
+        {
+            t.gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
+
+        if (SpawnEnnemis.Length > SpawnPositions.Length)
+        {
+            Debug.LogError("Spawner Error 1 : there is " + SpawnEnnemis.Length + 1 + "ennemis set for " + SpawnPositions.Length + 1 + " locations.");
+        }
+        else if (SpawnPositions.Length > SpawnEnnemis.Length)
+        {
+            Debug.LogError("Spawner Error 2 : there is " + SpawnPositions.Length + 1 + "positons set for " + SpawnEnnemis.Length + 1 + " ennemis.");
+        }
+    }
+
     public int GetEnnemisNumber()
     {
         return SpawnEnnemis.Length;
@@ -19,18 +36,6 @@ public class Spawner : MonoBehaviour
         List<Transform> list = new List<Transform>(SpawnPositions);
         list.RemoveAt(0);
         SpawnPositions = list.ToArray();
-    }
-
-    private void Start() //strangely not working
-    {
-        if (SpawnEnnemis.Length > SpawnPositions.Length)
-        {
-            Debug.LogError("Spawner Error 1 : there is " + SpawnEnnemis.Length + 1 + "ennemis set for " + SpawnPositions.Length + 1 + " locations.");
-        }
-        else if (SpawnPositions.Length > SpawnEnnemis.Length)
-        {
-            Debug.LogError("Spawner Error 2 : there is " + SpawnPositions.Length + 1 + "positons set for " + SpawnEnnemis.Length + 1 + " ennemis.");
-        }
     }
 
     void Spawn()

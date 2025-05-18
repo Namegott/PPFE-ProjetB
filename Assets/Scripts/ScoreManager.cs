@@ -54,6 +54,19 @@ public class ScoreManager : MonoBehaviour
 
     void UpdateCombo()
     {
+        Combo.fontSize = (ActualCombo / 5) + 65;
+        if (ActualCombo >  MaxCombo)
+        {
+            Combo.color = new Vector4(0.9372549f, 0.7490196f, 0.01568628f, 1);
+        }
+        else if (ActualCombo == 0)
+        {
+            Combo.color = Color.black;
+        }
+        else
+        {
+            Combo.color = new Vector4(0, 0.7264151f, 0, 1);
+        }
         Combo.text = ActualCombo.ToString();
     }
 

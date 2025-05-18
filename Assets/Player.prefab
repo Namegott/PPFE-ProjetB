@@ -122,6 +122,7 @@ MonoBehaviour:
   AttackDamageMax: 3
   StunDuration: 0.5
   PropulsionForce: {x: -10, y: 2, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &549045599685695147
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,6 +703,7 @@ MonoBehaviour:
   AttackDamageMax: 5
   StunDuration: 0.4
   PropulsionForce: {x: 5, y: 2, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &2106388811959179636
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +823,7 @@ GameObject:
   - component: {fileID: 7965988822880844056}
   - component: {fileID: 3428454856380498640}
   - component: {fileID: 6103997516355074381}
+  - component: {fileID: 5319182951862542789}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -1000,6 +1003,27 @@ MonoBehaviour:
   InvincibilityTime: 0.5
   DamageGet: {fileID: 0}
   HpBar: {fileID: 3278511880802524379}
+  ScoreManager: {fileID: 0}
+  ScoreGain: 0
+--- !u!114 &5319182951862542789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131933307385436980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a724f5fde32266441ae49b760621fe95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Score: 0
+  KillScore: 0
+  ActualCombo: 0
+  MaxCombo: 0
+  Combo: {fileID: 2441774825180218587}
+  PlayerHealth: {fileID: 6103997516355074381}
+  HealthMult: 0
 --- !u!1 &2487715293806052543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,6 +1252,7 @@ MonoBehaviour:
   AttackDamageMax: 5
   StunDuration: 0.4
   PropulsionForce: {x: -5, y: 2, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &4008021516857057151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1350,6 +1375,7 @@ MonoBehaviour:
   AttackDamageMax: 3
   StunDuration: 0.5
   PropulsionForce: {x: -2, y: 6, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &5064980065878322124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1929,6 +1955,7 @@ MonoBehaviour:
   AttackDamageMax: 5
   StunDuration: 0.4
   PropulsionForce: {x: 5, y: 2, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &6858067502129957630
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,6 +2078,7 @@ MonoBehaviour:
   AttackDamageMax: 5
   StunDuration: 0.4
   PropulsionForce: {x: -5, y: 2, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &7181712066962558925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,6 +2276,7 @@ MonoBehaviour:
   AttackDamageMax: 3
   StunDuration: 0.5
   PropulsionForce: {x: 10, y: 2, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &8701272701983365290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2284,7 +2313,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 169, y: 0}
-  m_SizeDelta: {x: 350, y: 216}
+  m_SizeDelta: {x: 300, y: 216}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &65888087783873698
 CanvasRenderer:
@@ -2314,17 +2343,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' COMBO : '
+  m_text: ' COMBO :'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b88993b4fee8db84a9877e4c3f415ee4, type: 2}
+  m_sharedMaterial: {fileID: 7159586730677888394, guid: b88993b4fee8db84a9877e4c3f415ee4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2347,7 +2376,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2505,6 +2534,7 @@ MonoBehaviour:
   AttackDamageMax: 3
   StunDuration: 0.5
   PropulsionForce: {x: 2, y: 6, z: 0}
+  ScoreManager: {fileID: 0}
 --- !u!1 &8792633893563219985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,17 +2635,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: XXXXXXXXX
+  m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0a3c2365dfc20474dba9658b6d6f60ab, type: 2}
+  m_sharedMaterial: {fileID: -3647788969487278985, guid: 0a3c2365dfc20474dba9658b6d6f60ab, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2632,8 +2662,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 65
+  m_fontSizeBase: 65
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2642,7 +2672,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
