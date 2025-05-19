@@ -51,7 +51,6 @@ public class Finish : MonoBehaviour
     public void FinishGame(string endStatus)
     {
         GameScore = ScoreManager.ScoreCalculator();
-        EventSystem.SetSelectedGameObject(PseudoInput.gameObject);
 
         EndStatus.text = endStatus;
         if (endStatus == "LEVEL FINISHED !")
@@ -102,6 +101,7 @@ public class Finish : MonoBehaviour
         }
 
         FinishMenu.SetActive(true);
+        EventSystem.SetSelectedGameObject(PseudoInput.gameObject);
 
         FindAnyObjectByType<CameraManager>().ForceStopCam();
         Destroy(FindAnyObjectByType<MovementManager>().gameObject);
@@ -115,6 +115,7 @@ public class Finish : MonoBehaviour
 
     public void ReturnMainMenu()
     {
+        GamePseudo = GamePseudoTextBox.text;
         //Debug.Log("a");
         //save the score (if highscore)
         SaveManager.SetHighScore(SceneNumber, GameScore, GamePseudo);

@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 3
-  AttackDamageMax: 3
+  AttackDamageMin: 8
+  AttackDamageMax: 8
   StunDuration: 0.5
   PropulsionForce: {x: -10, y: 2, z: 0}
   ScoreManager: {fileID: 0}
@@ -1371,8 +1371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 3
-  AttackDamageMax: 3
+  AttackDamageMin: 7
+  AttackDamageMax: 7
   StunDuration: 0.5
   PropulsionForce: {x: -2, y: 6, z: 0}
   ScoreManager: {fileID: 0}
@@ -2272,8 +2272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 3
-  AttackDamageMax: 3
+  AttackDamageMin: 8
+  AttackDamageMax: 8
   StunDuration: 0.5
   PropulsionForce: {x: 10, y: 2, z: 0}
   ScoreManager: {fileID: 0}
@@ -2530,8 +2530,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 3
-  AttackDamageMax: 3
+  AttackDamageMin: 7
+  AttackDamageMax: 7
   StunDuration: 0.5
   PropulsionForce: {x: 2, y: 6, z: 0}
   ScoreManager: {fileID: 0}
