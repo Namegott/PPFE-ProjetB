@@ -22,6 +22,14 @@ public class CombatManager : MonoBehaviour
     [SerializeField] VisualState VisualState = VisualState.None;
 
     public bool GamePause;
+
+    [Header("Sound")]
+    [SerializeField] AudioSource Source;
+    [SerializeField] AudioClip[] PunchSounds;
+    [SerializeField] AudioClip UppercutSound;
+    [SerializeField] AudioClip SlideSound;
+    [SerializeField] AudioClip BlockTrigger;
+    [SerializeField] AudioSource BlockDuration;
     
     void Update()
     {
@@ -48,6 +56,9 @@ public class CombatManager : MonoBehaviour
                 {
                     //Debug.Log("Def");
 
+                    Source.PlayOneShot(BlockTrigger, 0.5f);
+                    BlockDuration.Play();
+
                     HealthManager.BlockStart(DurationBlockAll);
                     VisualState = VisualState.Block;
                 }
@@ -58,6 +69,8 @@ public class CombatManager : MonoBehaviour
                 {
                     //Debug.Log("plus Def");
                     CanBlock = false;
+
+                    BlockDuration.Stop();
 
                     StartCoroutine(BlockCooldown(CdBlock));
                     HealthManager.BlockEnd();
@@ -125,11 +138,15 @@ public class CombatManager : MonoBehaviour
                 AttacksHitbox[5].gameObject.SetActive(false);
                 AttacksHitbox[4].gameObject.SetActive(true);
 
+                Source.PlayOneShot(PunchSounds[Random.Range(0, PunchSounds.Length)]);
+
                 StartCoroutine(AttackDuration(AttacksDurations[0]));
                 VisualState = VisualState.Punch0;
             }
             else if (PunchState == 1)
             {
+                PunchState = 0;
+
                 //right
                 AttacksHitbox[0].gameObject.SetActive(false);
                 AttacksHitbox[1].gameObject.SetActive(true);
@@ -137,7 +154,8 @@ public class CombatManager : MonoBehaviour
                 AttacksHitbox[4].gameObject.SetActive(false);
                 AttacksHitbox[5].gameObject.SetActive(true);
 
-                PunchState = 0;
+                Source.PlayOneShot(PunchSounds[Random.Range(0, PunchSounds.Length)]);
+                
                 StartCoroutine(AttackDuration(AttacksDurations[0]));
                 VisualState = VisualState.Punch1;
             }
@@ -185,6 +203,9 @@ public class CombatManager : MonoBehaviour
                 //attaque
                 AttacksHitbox[2].gameObject.SetActive(true);
                 AttacksHitbox[6].gameObject.SetActive(true);
+
+                Source.PlayOneShot(UppercutSound);
+
                 StartCoroutine(AttackDuration(AttacksDurations[1]));
                 VisualState = VisualState.Uppercut;
             }
@@ -199,6 +220,9 @@ public class CombatManager : MonoBehaviour
 
             AttacksHitbox[3].gameObject.SetActive(true);
             AttacksHitbox[7].gameObject.SetActive(true);
+
+            Source.PlayOneShot(SlideSound);
+
             StartCoroutine(AttackDuration(AttacksDurations[2]));
             VisualState = VisualState.Slide;
         }

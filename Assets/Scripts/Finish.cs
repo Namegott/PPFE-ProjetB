@@ -26,6 +26,12 @@ public class Finish : MonoBehaviour
     [SerializeField] Selectable PseudoInput;
     [SerializeField] int SceneNumber;
 
+    [SerializeField] AudioSource ButtonPress;
+    [SerializeField] AudioSource ButtonPressNo;
+    [SerializeField] AudioSource FinishSound;
+    [SerializeField] AudioClip SoundWin;
+    [SerializeField] AudioClip SoundLose;
+
     void Start()
     {
         ScoreManager = FindAnyObjectByType<ScoreManager>();
@@ -39,10 +45,12 @@ public class Finish : MonoBehaviour
         {
             if (GamePseudo != "")
             {
+                ButtonPress.Play();
                 ReturnMainMenu();
             }
             else
             {
+                ButtonPressNo.Play();
                 Debug.Log("no nickname !");
             }
         }
@@ -56,10 +64,12 @@ public class Finish : MonoBehaviour
         if (endStatus == "LEVEL FINISHED !")
         {
             EndStatus.color = new Vector4(0.01579743f, 0.6698113f, 0.01579743f, 1);
+            FinishSound.clip = SoundWin;
         }
         else if (endStatus == "YOU DIED !")
         {
             EndStatus.color = new Vector4(0.6698113f, 0.01579743f, 0.01579743f, 1);
+            FinishSound.clip = SoundLose;
         }
         GameScoreTextBox.text = GameScore.ToString();
 

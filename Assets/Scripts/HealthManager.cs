@@ -20,6 +20,14 @@ public class HealthManager : MonoBehaviour
     [SerializeField] ScoreManager ScoreManager;
     [SerializeField] int ScoreGain;
 
+    [Header("Sound")]
+    [SerializeField] AudioSource Source;
+    [SerializeField] AudioClip[] DamageFull;
+    [SerializeField] AudioClip[] DamageHalf;
+    [SerializeField] AudioClip[] DamageBlock;
+
+
+
     public int GetHealth()
     { return Health; }
     public int GetMaxHealth() 
@@ -45,11 +53,14 @@ public class HealthManager : MonoBehaviour
         {
             if (BlockAll)
             {
-
+                Source.PlayOneShot(DamageBlock[Random.Range(0, DamageBlock.Length)]);
             }
             else if (BlockHalf) 
             {
                 Health -= damage / 2;
+
+                Source.PlayOneShot(DamageHalf[Random.Range(0, DamageHalf.Length)]);
+
                 //DamageGet.text = damage.ToString();
                 if (gameObject.layer == 7)
                 {
@@ -62,6 +73,9 @@ public class HealthManager : MonoBehaviour
             {
                 Health -= damage;
                 //DamageGet.text = damage.ToString();
+
+                Source.PlayOneShot(DamageFull[Random.Range(0, DamageFull.Length)]);
+
                 if (gameObject.layer == 7)
                 {
                     ScoreManager.EndCombo();

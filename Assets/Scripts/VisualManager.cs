@@ -9,36 +9,73 @@ public class VisualManager : MonoBehaviour
     [SerializeField] GameObject AttackHitboxRight;
     [SerializeField] GameObject AttackHitboxLeft;
     [SerializeField] GameObject[] Visuals;
+    [SerializeField] ParticleSystem MoveParticles;
 
     void Update()
     {
         if (Combat.GetVisualState() == VisualState.Block)
         {
-            ChangeVisual(6);
+            ChangeVisual(7);
+            if (MoveParticles.isEmitting)
+            {
+                MoveParticles.Stop();
+            }
         }
         else if (Combat.GetVisualState() == VisualState.Slide)
         {
-            ChangeVisual(5);
+            ChangeVisual(6);
+            if (MoveParticles.isEmitting)
+            {
+                MoveParticles.Stop();
+            }
         }
         else if (Combat.GetVisualState() == VisualState.Uppercut)
         {
-            ChangeVisual(4);
+            ChangeVisual(5);
+            if (MoveParticles.isEmitting)
+            {
+                MoveParticles.Stop();
+            }
         }
         else if (Combat.GetVisualState() == VisualState.Punch1)
         {
-            ChangeVisual(3);
+            ChangeVisual(4);
+            if (MoveParticles.isEmitting)
+            {
+                MoveParticles.Stop();
+            }
         }
         else if (Combat.GetVisualState() == VisualState.Punch0)
         {
+            ChangeVisual(3);
+            if (MoveParticles.isEmitting)
+            {
+                MoveParticles.Stop();
+            }
+        }
+        else if (Movement.GetMoving() && Movement.GetMoveState())
+        {
             ChangeVisual(2);
+            if (!MoveParticles.isEmitting)
+            {
+                MoveParticles.Play();
+            }
         }
         else if (Movement.GetMoving())
         {
             ChangeVisual(1);
+            if (!MoveParticles.isEmitting)
+            {
+                MoveParticles.Play();
+            }
         }
         else
         {
             ChangeVisual(0);
+            if (MoveParticles.isEmitting)
+            {
+                MoveParticles.Stop();
+            }
         }
     }
 

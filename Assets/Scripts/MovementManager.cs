@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MovementManager : MonoBehaviour
@@ -6,12 +7,20 @@ public class MovementManager : MonoBehaviour
     [SerializeField] VisualManager VisualManager;
 
     [SerializeField] float Speed = 5;
+    [SerializeField] float SpeedVertical = 10;
     [SerializeField] Vector3 Direction;
 
     public bool GamePause;
 
+    [SerializeField] AudioSource Source;
+    [SerializeField] AudioClip[] StepSounds;
+    [SerializeField] bool PlaySound = true;
+    [SerializeField] float DelayStepSoundMin = 0.3f;
+    [SerializeField] float DelayStepSoundMax = 0.6f;
+
     bool IsMoving;
     bool MovingLeft;
+    bool State;
 
     void Start()
     {
@@ -53,6 +62,14 @@ public class MovementManager : MonoBehaviour
         {
             IsMoving = true;
 
+            if (PlaySound)
+            {
+                PlaySound = false;
+                State = !State;
+                Source.PlayOneShot(StepSounds[Random.Range(0, StepSounds.Length)], 0.5f);
+                StartCoroutine(DelayStep());
+            }
+
             //Debug.Log(Direction.x);
 
             if (Direction.x > 0.1)
@@ -75,7 +92,7 @@ public class MovementManager : MonoBehaviour
         Direction = Direction.normalized;
 
         // applique le déplacement
-        Transform.position = new Vector3(Transform.position.x + (Speed * Direction.x * Time.deltaTime), Transform.position.y, Transform.position.z + (Speed * Direction.z * Time.deltaTime));
+        Transform.position = new Vector3(Transform.position.x + (Speed * Direction.x * Time.deltaTime), Transform.position.y, Transform.position.z + (SpeedVertical * Direction.z * Time.deltaTime));
     }
 
     public string GetDirection()
@@ -93,5 +110,16 @@ public class MovementManager : MonoBehaviour
     public bool GetMoving()
     {
         return IsMoving;
+    }
+
+    public bool GetMoveState()
+    {
+        return State;
+    }
+
+    IEnumerator DelayStep()
+    {
+        yield return new WaitForSeconds(Random.Range(DelayStepSoundMin, DelayStepSoundMax));
+        PlaySound = true;
     }
 }
