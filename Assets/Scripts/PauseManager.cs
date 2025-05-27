@@ -9,6 +9,7 @@ public class PauseManager : MonoBehaviour
 {
     [SerializeField] MovementManager MovementManager;
     [SerializeField] CombatManager CombatManager;
+    [SerializeField] AudioSource[] AllAudio;
 
     [SerializeField] GameObject GlobalMenu;
     [SerializeField] GameObject ControlsMenu;
@@ -48,6 +49,13 @@ public class PauseManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0f;
+
+        AllAudio = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource audio in AllAudio)
+        {
+            audio.Pause();
+        }
+
         MovementManager.GamePause = true;
         CombatManager.GamePause = true;
         GlobalMenu.SetActive(true);
@@ -58,6 +66,13 @@ public class PauseManager : MonoBehaviour
     public void Unpause()
     {
         Time.timeScale = 1f;
+
+        foreach (AudioSource audio in AllAudio)
+        {
+            audio.UnPause();
+        }
+        AllAudio = null;
+
         StopCoroutine(Animation);
         GlobalMenu.SetActive(false);
         MovementManager.GamePause = false;

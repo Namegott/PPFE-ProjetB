@@ -66,7 +66,7 @@ public class MovementManager : MonoBehaviour
             {
                 PlaySound = false;
                 State = !State;
-                Source.PlayOneShot(StepSounds[Random.Range(0, StepSounds.Length)], 0.5f);
+                Source.PlayOneShot(StepSounds[Random.Range(0, StepSounds.Length)], 0.1f);
                 StartCoroutine(DelayStep());
             }
 

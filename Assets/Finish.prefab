@@ -926,6 +926,7 @@ GameObject:
   - component: {fileID: 1692313342352154798}
   - component: {fileID: 4802056852443087767}
   - component: {fileID: 6167428838165318798}
+  - component: {fileID: 7109524115402785778}
   m_Layer: 0
   m_Name: Finish
   m_TagString: Untagged
@@ -1066,6 +1067,14 @@ MonoBehaviour:
     - 
     - 
     Score: 0000000000000000000000000000000000000000
+--- !u!81 &7109524115402785778
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461875296259012956}
+  m_Enabled: 0
 --- !u!1 &1839454642628123035
 GameObject:
   m_ObjectHideFlags: 0

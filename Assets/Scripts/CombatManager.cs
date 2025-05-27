@@ -56,7 +56,7 @@ public class CombatManager : MonoBehaviour
                 {
                     //Debug.Log("Def");
 
-                    Source.PlayOneShot(BlockTrigger, 0.5f);
+                    Source.PlayOneShot(BlockTrigger, .1f);
                     BlockDuration.Play();
 
                     HealthManager.BlockStart(DurationBlockAll);
@@ -138,7 +138,7 @@ public class CombatManager : MonoBehaviour
                 AttacksHitbox[5].gameObject.SetActive(false);
                 AttacksHitbox[4].gameObject.SetActive(true);
 
-                Source.PlayOneShot(PunchSounds[Random.Range(0, PunchSounds.Length)]);
+                Source.PlayOneShot(PunchSounds[Random.Range(0, PunchSounds.Length)], 0.5f);
 
                 StartCoroutine(AttackDuration(AttacksDurations[0]));
                 VisualState = VisualState.Punch0;
@@ -154,7 +154,7 @@ public class CombatManager : MonoBehaviour
                 AttacksHitbox[4].gameObject.SetActive(false);
                 AttacksHitbox[5].gameObject.SetActive(true);
 
-                Source.PlayOneShot(PunchSounds[Random.Range(0, PunchSounds.Length)]);
+                Source.PlayOneShot(PunchSounds[Random.Range(0, PunchSounds.Length)], 0.5f);
                 
                 StartCoroutine(AttackDuration(AttacksDurations[0]));
                 VisualState = VisualState.Punch1;
@@ -204,7 +204,7 @@ public class CombatManager : MonoBehaviour
                 AttacksHitbox[2].gameObject.SetActive(true);
                 AttacksHitbox[6].gameObject.SetActive(true);
 
-                Source.PlayOneShot(UppercutSound);
+                Source.PlayOneShot(UppercutSound, 0.25f);
 
                 StartCoroutine(AttackDuration(AttacksDurations[1]));
                 VisualState = VisualState.Uppercut;
@@ -221,7 +221,7 @@ public class CombatManager : MonoBehaviour
             AttacksHitbox[3].gameObject.SetActive(true);
             AttacksHitbox[7].gameObject.SetActive(true);
 
-            Source.PlayOneShot(SlideSound);
+            Source.PlayOneShot(SlideSound, 0.35f);
 
             StartCoroutine(AttackDuration(AttacksDurations[2]));
             VisualState = VisualState.Slide;

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
@@ -25,8 +26,10 @@ public class HealthManager : MonoBehaviour
     [SerializeField] AudioClip[] DamageFull;
     [SerializeField] AudioClip[] DamageHalf;
     [SerializeField] AudioClip[] DamageBlock;
-
-
+    [SerializeField] float StrengthSoundDamageFull;
+    [SerializeField] AudioClip DeathSound;
+    [SerializeField] GameObject DeathSoundPlayer;
+    [SerializeField] float DeathDelay;
 
     public int GetHealth()
     { return Health; }
@@ -53,13 +56,13 @@ public class HealthManager : MonoBehaviour
         {
             if (BlockAll)
             {
-                Source.PlayOneShot(DamageBlock[Random.Range(0, DamageBlock.Length)]);
+                Source.PlayOneShot(DamageBlock[Random.Range(0, DamageBlock.Length)], 0.25f);
             }
             else if (BlockHalf) 
             {
                 Health -= damage / 2;
 
-                Source.PlayOneShot(DamageHalf[Random.Range(0, DamageHalf.Length)]);
+                Source.PlayOneShot(DamageHalf[Random.Range(0, DamageHalf.Length)], 0.25f);
 
                 //DamageGet.text = damage.ToString();
                 if (gameObject.layer == 7)
@@ -74,7 +77,8 @@ public class HealthManager : MonoBehaviour
                 Health -= damage;
                 //DamageGet.text = damage.ToString();
 
-                Source.PlayOneShot(DamageFull[Random.Range(0, DamageFull.Length)]);
+                //Debug.Log(soundStrength);
+                Source.PlayOneShot(DamageFull[Random.Range(0, DamageFull.Length)], StrengthSoundDamageFull);
 
                 if (gameObject.layer == 7)
                 {
@@ -108,7 +112,15 @@ public class HealthManager : MonoBehaviour
 
     void DeathEnnmi()
     {
-        Destroy(gameObject);
+        GameObject go = Instantiate(DeathSoundPlayer, gameObject.transform);
+        go.GetComponent<EnnemiDeathSound>().Play(DeathSound);
+
+        Destroy(GetComponent<EnnemiBase>());
+        Destroy(GetComponent<BoxCollider>());
+        GetComponent<AutoDestroy>().Delay = DeathDelay;
+        GetComponent<AutoDestroy>().enabled = true;
+
+        Destroy(this);
     }
 
     private void UpdateLifeHUD()

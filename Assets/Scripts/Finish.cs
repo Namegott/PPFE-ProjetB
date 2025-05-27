@@ -115,6 +115,7 @@ public class Finish : MonoBehaviour
 
         FindAnyObjectByType<CameraManager>().ForceStopCam();
         Destroy(FindAnyObjectByType<MovementManager>().gameObject);
+        GetComponent<AudioListener>().enabled = true;
         Destroy(FindAnyObjectByType<PauseManager>().gameObject);
     }
 

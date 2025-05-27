@@ -26,6 +26,10 @@ public class EnnemiPoulpeManager : EnnemiBase
     [SerializeField] GameObject VisualParent;
     [SerializeField] bool RotateTorward;
 
+    [Header("Sounds")]
+    [SerializeField] AudioSource Source;
+    [SerializeField] AudioClip AimSound;
+    [SerializeField] AudioClip ShootSound;
 
     private void Start()
     {
@@ -143,6 +147,11 @@ public class EnnemiPoulpeManager : EnnemiBase
         }
     }
 
+    void OnDestroy()
+    {
+        ChangeVisual(0);
+    }
+
     IEnumerator SetupStartDelay()
     {
         yield return new WaitForSeconds(Random.Range(DelaySetupMin, DelaySetupMax));
@@ -153,11 +162,17 @@ public class EnnemiPoulpeManager : EnnemiBase
     {
         ChangeVisual(2);
         RotateTorward = true;
+
+        Source.PlayOneShot(AimSound, 0.10f);
+
         yield return new WaitForSeconds(DelayPreAttack);
 
         RotateTorward = false;
         GameObject proj = Instantiate(Projectile);
         proj.GetComponent<ProjSquidManager>().Setup(transform.position, Player.transform.position, ImpactDuration, ProjDuration);
+
+        Source.PlayOneShot(ShootSound, 1f);
+
         yield return new WaitForSeconds(ProjDuration + ImpactDuration);
 
         ChangeVisual(0);

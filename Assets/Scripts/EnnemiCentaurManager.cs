@@ -27,6 +27,12 @@ public class EnnemiCentaurManager : EnnemiBase
     [SerializeField] GameObject VisualParent;
     [SerializeField] bool RotateTorward;
 
+    [Header("Sounds")]
+    [SerializeField] AudioSource Source;
+    [SerializeField] AudioSource Growl;
+    [SerializeField] AudioClip BreathingSound;
+    public float testson;
+
     private void Start()
     {
         Player = FindObjectOfType<MovementManager>().gameObject;
@@ -166,10 +172,16 @@ public class EnnemiCentaurManager : EnnemiBase
         }
     }
 
+    void OnDestroy()
+    {
+        ChangeVisual(0);
+    }
+
     IEnumerator LoadAttack()
     {
         Debug.Log("attack");
         ChangeVisual(2);
+        Growl.enabled = true;
         RotateTorward = true;
         yield return new WaitForSeconds(LoadAttackTime);
 
@@ -189,6 +201,8 @@ public class EnnemiCentaurManager : EnnemiBase
         Destination = Instantiate(MoveDestination, target, Quaternion.identity);
         Direction = Destination.transform.position - transform.position;
 
+        Growl.enabled = false;
+
         Attack = true;
     }
 
@@ -196,6 +210,7 @@ public class EnnemiCentaurManager : EnnemiBase
     {
         Debug.Log("end attack");
         ChangeVisual(0);
+        Source.PlayOneShot(BreathingSound, testson);
         AttackHitbox.SetActive(false);
         yield return new WaitForSeconds(DelayPostAttack);
 

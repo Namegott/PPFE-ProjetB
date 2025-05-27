@@ -317,6 +317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2009757457020886263}
+  - component: {fileID: 4506683575058509885}
   m_Layer: 7
   m_Name: NavRef
   m_TagString: Untagged
@@ -333,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 775077302651411987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -341,6 +342,14 @@ Transform:
   - {fileID: 1385242264560726326}
   m_Father: {fileID: 620120880080391836}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &4506683575058509885
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775077302651411987}
+  m_Enabled: 1
 --- !u!1 &1168742380713099286
 GameObject:
   m_ObjectHideFlags: 0
@@ -5871,6 +5880,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f8a8f4f0ea544d94ca7a87ca780f3746, type: 3}
   DamageBlock:
   - {fileID: 8300000, guid: a8a732fa47749d84eb4d82c04abce5b2, type: 3}
+  StrengthSoundDamageFull: 0.25
 --- !u!114 &5319182951862542789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5974,7 +5984,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 5
+  MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -6415,7 +6425,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 23441e3081a237b48bb144486facbf37, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
