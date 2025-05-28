@@ -5538,8 +5538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 5
-  AttackDamageMax: 5
+  AttackDamageMin: 3
+  AttackDamageMax: 3
   StunDuration: 0.4
   PropulsionForce: {x: 5, y: 2, z: 0}
   ScoreManager: {fileID: 0}
@@ -5881,6 +5881,9 @@ MonoBehaviour:
   DamageBlock:
   - {fileID: 8300000, guid: a8a732fa47749d84eb4d82c04abce5b2, type: 3}
   StrengthSoundDamageFull: 0.25
+  DeathSound: {fileID: 0}
+  DeathSoundPlayer: {fileID: 0}
+  DeathDelay: 0
 --- !u!114 &5319182951862542789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6253,8 +6256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 5
-  AttackDamageMax: 5
+  AttackDamageMin: 3
+  AttackDamageMax: 3
   StunDuration: 0.4
   PropulsionForce: {x: -5, y: 2, z: 0}
   ScoreManager: {fileID: 0}
@@ -7086,8 +7089,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 5
-  AttackDamageMax: 5
+  AttackDamageMin: 3
+  AttackDamageMax: 3
   StunDuration: 0.4
   PropulsionForce: {x: 5, y: 2, z: 0}
   ScoreManager: {fileID: 0}
@@ -7209,8 +7212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 5
-  AttackDamageMax: 5
+  AttackDamageMin: 3
+  AttackDamageMax: 3
   StunDuration: 0.4
   PropulsionForce: {x: -5, y: 2, z: 0}
   ScoreManager: {fileID: 0}
