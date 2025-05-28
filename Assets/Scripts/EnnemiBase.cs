@@ -16,6 +16,8 @@ public class EnnemiBase : MonoBehaviour
     [SerializeField] protected bool CanMove = true;
 
     [SerializeField] protected GameObject Destination;
+    protected Vector2 MapLimitX;
+    protected Vector2 MapLimitZ;
 
     public GameObject GetDestination()
     {

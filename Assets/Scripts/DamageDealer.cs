@@ -27,6 +27,7 @@ public class DamageDealer : MonoBehaviour
             hitTarget.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (gameObject.layer == 7)
             {
+                Debug.Log("Player has hit a " + ennemi.gameObject.name);
                 ScoreManager.AddCombo();
             }
         }

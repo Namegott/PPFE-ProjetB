@@ -39,6 +39,9 @@ public class EnnemiCentaurManager : EnnemiBase
         Rigidbody = GetComponent<Rigidbody>();
         GroundCheck = GetComponentInChildren<GroundDetector>();
 
+        MapLimitX = FindFirstObjectByType<MapLimit>().GetMapLimitX();
+        MapLimitZ = FindFirstObjectByType<MapLimit>().GetMapLimitZ();
+
         StartCoroutine(SetupStartDelay());
     }
 
@@ -94,7 +97,8 @@ public class EnnemiCentaurManager : EnnemiBase
             Debug.Log("move far");
             Vector3 target = Player.transform.position - transform.position;
             target = target.normalized * (DistanceAttackMax - DistanceAttackMin) * -1 + transform.position;
-            target.z = Mathf.Clamp(target.z, 1, 19.5f);
+            target.x = Mathf.Clamp(target.x, MapLimitX.x, MapLimitX.y);                                                         //pour pas sortir de la map
+            target.z = Mathf.Clamp(target.z, MapLimitZ.x, MapLimitZ.y);
 
             Destination = Instantiate(MoveDestination, target, Quaternion.identity);
             Direction = Destination.transform.position - transform.position;
@@ -110,10 +114,11 @@ public class EnnemiCentaurManager : EnnemiBase
             Debug.Log("move close");
             Vector3 target = Player.transform.position - transform.position;
             target = transform.position + target.normalized * (Distance - DistanceAttackMax);
-            target.z = Mathf.Clamp(target.z, 1, 19.5f);
-                /*Player.transform.position - transform.position;
-            target = target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position;
-            target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));*/
+            target.x = Mathf.Clamp(target.x, MapLimitX.x, MapLimitX.y);                                                         //pour pas sortir de la map
+            target.z = Mathf.Clamp(target.z, MapLimitZ.x, MapLimitZ.y);
+            /*Player.transform.position - transform.position;
+        target = target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position;
+        target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));*/
 
             Destination = Instantiate(MoveDestination, target, Quaternion.identity);
             Direction = Destination.transform.position - transform.position;
@@ -195,8 +200,10 @@ public class EnnemiCentaurManager : EnnemiBase
         Rigidbody.useGravity = false;
 
         //movement
-        Vector3 target = transform.position + (transform.forward * (DistanceAttackMax * 2));
-        target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));
+        Vector3 target = transform.position + (transform.forward * (DistanceAttackMax * 1.5f));
+        target.x = Mathf.Clamp(target.x, MapLimitX.x, MapLimitX.y);                                                         //pour pas sortir de la map
+        target.z = Mathf.Clamp(target.z, MapLimitZ.x, MapLimitZ.y);
+        target = new Vector3(target.x, target.y, target.z);
 
         Destination = Instantiate(MoveDestination, target, Quaternion.identity);
         Direction = Destination.transform.position - transform.position;
@@ -210,8 +217,15 @@ public class EnnemiCentaurManager : EnnemiBase
     {
         Debug.Log("end attack");
         ChangeVisual(0);
+
+        Rigidbody.velocity = Vector3.zero;
+
         Source.PlayOneShot(BreathingSound, testson);
         AttackHitbox.SetActive(false);
+
+        GetComponent<BoxCollider>().isTrigger = false;
+        Rigidbody.useGravity = true;
+
         yield return new WaitForSeconds(DelayPostAttack);
 
         Setup();

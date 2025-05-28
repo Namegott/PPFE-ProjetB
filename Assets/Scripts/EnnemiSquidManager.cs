@@ -15,7 +15,6 @@ public class EnnemiPoulpeManager : EnnemiBase
     [SerializeField] bool NeedMove;
     [SerializeField] GameObject MoveDestination;
 
-
     [Header("Projectile")]
     [SerializeField] GameObject Projectile;
     [SerializeField] float ImpactDuration;
@@ -36,6 +35,9 @@ public class EnnemiPoulpeManager : EnnemiBase
         Player = FindObjectOfType<MovementManager>().gameObject;
         Rigidbody = GetComponent<Rigidbody>();
         GroundCheck = GetComponentInChildren<GroundDetector>();
+
+        MapLimitX = FindFirstObjectByType<MapLimit>().GetMapLimitX();
+        MapLimitZ = FindFirstObjectByType<MapLimit>().GetMapLimitZ();
 
         StartCoroutine(SetupStartDelay());
     }
@@ -88,7 +90,9 @@ public class EnnemiPoulpeManager : EnnemiBase
         {
             Vector3 target = Player.transform.position - transform.position;
             target = target.normalized * (DistanceAttackMax - DistanceAttackMin) * -1 + transform.position;
-            target = new Vector3(target.x, target.y, Mathf.Clamp(target.z, 1, 19.5f));
+            target.x = Mathf.Clamp(target.x, MapLimitX.x, MapLimitX.y);                                                         //pour pas sortir de la map
+            target.z = Mathf.Clamp(target.z, MapLimitZ.x, MapLimitZ.y);
+            target = new Vector3(target.x, target.y, target.z);
 
             Destination = Instantiate(MoveDestination, target, Quaternion.identity);
             Direction = Destination.transform.position - transform.position;
@@ -103,7 +107,8 @@ public class EnnemiPoulpeManager : EnnemiBase
         {
             Vector3 target = Player.transform.position - transform.position;
             target = target.normalized * (DistanceAttackMax - DistanceAttackMin) + transform.position;
-            target.x = Mathf.Clamp(target.z, 1, 19.5f);
+            target.x = Mathf.Clamp(target.x, MapLimitX.x, MapLimitX.y);                                                         //pour pas sortir de la map
+            target.z = Mathf.Clamp(target.z, MapLimitZ.x, MapLimitZ.y);
             Destination = Instantiate(MoveDestination, target , Quaternion.identity);
 
             Direction = Destination.transform.position - transform.position;

@@ -20276,7 +20276,7 @@ MonoBehaviour:
   Velo: {x: 0, y: 0, z: 0}
   GroundCheck: {fileID: 5670228580272072374}
   Rigidbody: {fileID: 0}
-  Collider: {fileID: 0}
+  Collider: {fileID: 45215788196569018}
   Stun: 0
   CanMove: 1
   Destination: {fileID: 0}
