@@ -20,7 +20,12 @@ public class ScoreManager : MonoBehaviour
 
     public float GetHealthMult() 
     {
-        HealthMult = 1 + (PlayerHealth.GetHealth() / PlayerHealth.GetMaxHealth());
+        Debug.Log("1 + (" + PlayerHealth.GetHealth() + " / " + PlayerHealth.GetMaxHealth() + ")");
+        float health = PlayerHealth.GetHealth();
+        float maxHealth = PlayerHealth.GetMaxHealth();
+
+        HealthMult = 1 + (health / maxHealth);
+        Debug.Log("health mul : " + HealthMult);
         return HealthMult; 
     }
 

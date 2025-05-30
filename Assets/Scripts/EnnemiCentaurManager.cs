@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnnemiCentaurManager : EnnemiBase
 {
@@ -26,12 +24,14 @@ public class EnnemiCentaurManager : EnnemiBase
     [SerializeField] GameObject[] Visuals;
     [SerializeField] GameObject VisualParent;
     [SerializeField] bool RotateTorward;
+    [SerializeField] ParticleSystem[] MoveParticles;
+    [SerializeField] ParticleSystem LoadParticles;
+    [SerializeField] ParticleSystem RunParticles;
 
     [Header("Sounds")]
     [SerializeField] AudioSource Source;
     [SerializeField] AudioSource Growl;
     [SerializeField] AudioClip BreathingSound;
-    public float testson;
 
     private void Start()
     {
@@ -106,7 +106,10 @@ public class EnnemiCentaurManager : EnnemiBase
             NeedMove = true;
 
             //visual
-            ChangeVisual(1);
+            ChangeVisual(1); foreach (ParticleSystem particles in MoveParticles)
+            {
+                particles.Play();
+            }
             RotateTorward = true;
         }
         else if (Distance > DistanceAttackMax) //too far
@@ -127,16 +130,19 @@ public class EnnemiCentaurManager : EnnemiBase
 
             //visual
             ChangeVisual(1);
+            foreach (ParticleSystem particles in MoveParticles)
+            {
+                particles.Play();
+            }
             RotateTorward = true;
         }
     }
-
 
     public override void EndStun()
     {
         base.EndStun();
 
-        Setup();
+        //Setup();
     }
 
     public override void EndMove()
@@ -145,8 +151,8 @@ public class EnnemiCentaurManager : EnnemiBase
         if (Attack)
         {
             Debug.Log("bbb");
-            GetComponent<BoxCollider>().isTrigger = false;
-            Rigidbody.useGravity = true;
+            //GetComponent<BoxCollider>().isTrigger = false;
+            //Rigidbody.useGravity = true;
             Attack = false;
             StartCoroutine(PostAttack());
         }
@@ -155,6 +161,10 @@ public class EnnemiCentaurManager : EnnemiBase
             Debug.Log("end move");
             //visual
             ChangeVisual(0);
+            foreach (ParticleSystem particles in MoveParticles)
+            {
+                particles.Stop();
+            }
             RotateTorward = false;
 
             NeedMove = false;
@@ -187,17 +197,24 @@ public class EnnemiCentaurManager : EnnemiBase
         Debug.Log("attack");
         ChangeVisual(2);
         Growl.enabled = true;
+        LoadParticles.Play();
         RotateTorward = true;
         yield return new WaitForSeconds(LoadAttackTime);
 
         RotateTorward = false;
+        LoadParticles.Stop();
         ChangeVisual(3);
         yield return new WaitForSeconds(DelayPostLoad);
 
+        RunParticles.Play();
         AttackHitbox.SetActive(true);
 
-        GetComponent<BoxCollider>().isTrigger = true;
+        Debug.Log(Collider + " / " + Collider.gameObject + " / " + Collider.gameObject.name);
+        Debug.Log(Collider.isTrigger);
+        Collider.isTrigger = true;
+        GetComponent<Collider>().isTrigger = true;
         Rigidbody.useGravity = false;
+        Debug.Log(Collider.isTrigger);
 
         //movement
         Vector3 target = transform.position + (transform.forward * (DistanceAttackMax * 1.5f));
@@ -216,17 +233,20 @@ public class EnnemiCentaurManager : EnnemiBase
     IEnumerator PostAttack()
     {
         Debug.Log("end attack");
+        RunParticles.Stop();
         ChangeVisual(0);
 
         Rigidbody.velocity = Vector3.zero;
 
-        Source.PlayOneShot(BreathingSound, testson);
+        Source.PlayOneShot(BreathingSound, 1f);
         AttackHitbox.SetActive(false);
 
-        GetComponent<BoxCollider>().isTrigger = false;
+        Collider.isTrigger = false;
         Rigidbody.useGravity = true;
+        yield return new WaitForSeconds(DelayPostAttack / 2);
 
-        yield return new WaitForSeconds(DelayPostAttack);
+
+        yield return new WaitForSeconds(DelayPostAttack / 2);
 
         Setup();
     }

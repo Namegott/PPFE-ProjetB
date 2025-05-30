@@ -11,8 +11,9 @@ public class EnnemiBase : MonoBehaviour
     [SerializeField] protected GroundDetector GroundCheck;
 
     [SerializeField] protected Rigidbody Rigidbody;
-    [SerializeField] Collider Collider;
+    [SerializeField] protected Collider Collider;
     [SerializeField] protected bool Stun;
+    [SerializeField] Coroutine StunCoroutine;
     [SerializeField] protected bool CanMove = true;
 
     [SerializeField] protected GameObject Destination;
@@ -26,12 +27,18 @@ public class EnnemiBase : MonoBehaviour
 
     public virtual void StunEffect(float stunTime)
     {
+        Debug.Log("j'uis stun");
         Stun = true;
         CanMove = false;
 
         Collider.isTrigger = true;
 
-        StartCoroutine(StunTime(stunTime));
+        if (StunCoroutine != null)
+        {
+            StopCoroutine(StunCoroutine);
+        }
+        
+        StunCoroutine = StartCoroutine(StunTime(stunTime));
     }
 
     public virtual void EndStun()
@@ -70,7 +77,10 @@ public class EnnemiBase : MonoBehaviour
         {
             //Debug.Log("test");
             //Rigidbody.velocity = Vector3.zero;
-            Collider.isTrigger = false;
+            if (Stun)
+            {
+                Collider.isTrigger = false;
+            }
         }
         /*if (other.gameObject == Destination)
         {

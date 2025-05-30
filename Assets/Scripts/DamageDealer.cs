@@ -18,6 +18,7 @@ public class DamageDealer : MonoBehaviour
     {
         //applique les degats
         int damage = Random.Range(AttackDamageMin, AttackDamageMax);
+        Debug.Log("hit : " + hitTarget);
         hitTarget.gameObject.GetComponent<HealthManager>().Damage(damage);
 
         EnnemiBase ennemi = hitTarget.gameObject.GetComponent<EnnemiBase>();
@@ -34,5 +35,6 @@ public class DamageDealer : MonoBehaviour
 
         // applique des effets de knockback
         hitTarget.GetComponent<Rigidbody>().AddForce(PropulsionForce, ForceMode.Impulse);
+        Debug.Log(hitTarget.GetComponent<Rigidbody>().velocity);
     }
 }

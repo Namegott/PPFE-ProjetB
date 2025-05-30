@@ -9,7 +9,7 @@ public class MapLimit : MonoBehaviour
     {
         if (MapLimitX == Vector2.zero)
         {
-            Debug.LogError("Map length not set. All ennemis will move to 0-0.");
+            Debug.LogError("Map length not set. All ennemis will move to 0-0. Please set it in the Camera actor.");
         }
     }
 

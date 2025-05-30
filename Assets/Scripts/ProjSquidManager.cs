@@ -42,8 +42,11 @@ public class ProjSquidManager : MonoBehaviour
         ScalingPerSecond = scaleAim / ProjDuration;
 
         //setup impact
-        ImpactIndicator.transform.position = new Vector3(transform.position.x + player.x, 0, transform.position.z + player.z);
-        HitBox.transform.position = new Vector3(transform.position.x + player.x, 0, transform.position.z + player.z);
+        ImpactIndicator.transform.position = new Vector3(/*transform.position.x +*/ player.x, 0, /*transform.position.z +*/ player.z);
+        HitBox.transform.position = new Vector3(/*transform.position.x +*/ player.x, 0, /*transform.position.z +*/ player.z);
+
+        player = new Vector3(player.x - squid.x, player.y - squid.y, player.z - squid.z) ;
+        squid = new Vector3(0, 0, 0);
 
         //get middle point of spline
         float middleX = squid.x + ((player.x - squid.x) / 2);

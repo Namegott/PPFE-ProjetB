@@ -24,6 +24,7 @@ public class EnnemiPoulpeManager : EnnemiBase
     [SerializeField] GameObject[] Visuals;
     [SerializeField] GameObject VisualParent;
     [SerializeField] bool RotateTorward;
+    [SerializeField] ParticleSystem MoveParticles;
 
     [Header("Sounds")]
     [SerializeField] AudioSource Source;
@@ -101,6 +102,7 @@ public class EnnemiPoulpeManager : EnnemiBase
 
             //visual
             ChangeVisual(1);
+            MoveParticles.Play();
             RotateTorward = true;
         }
         else if (Distance > DistanceAttackMax) //too far
@@ -117,6 +119,7 @@ public class EnnemiPoulpeManager : EnnemiBase
 
             //visual
             ChangeVisual(1);
+            MoveParticles.Play();
             RotateTorward = true;
         }
     }
@@ -125,6 +128,7 @@ public class EnnemiPoulpeManager : EnnemiBase
     {
         //visual
         ChangeVisual(0);
+        MoveParticles.Stop();
         RotateTorward = false;
         
         NeedMove = false;
@@ -137,7 +141,7 @@ public class EnnemiPoulpeManager : EnnemiBase
     {
         base.EndStun();
 
-        Setup();
+        //Setup();
     }
 
     void ChangeVisual(int visualNumber)
@@ -173,7 +177,7 @@ public class EnnemiPoulpeManager : EnnemiBase
         yield return new WaitForSeconds(DelayPreAttack);
 
         RotateTorward = false;
-        GameObject proj = Instantiate(Projectile);
+        GameObject proj = Instantiate(Projectile, transform.position, Quaternion.identity);
         proj.GetComponent<ProjSquidManager>().Setup(transform.position, Player.transform.position, ImpactDuration, ProjDuration);
 
         Source.PlayOneShot(ShootSound, 1f);

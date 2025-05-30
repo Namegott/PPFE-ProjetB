@@ -21,6 +21,16 @@ public class HealthManager : MonoBehaviour
     [SerializeField] ScoreManager ScoreManager;
     [SerializeField] int ScoreGain;
 
+    [Header("Death Squid")]
+    [SerializeField] Material DeadMatSquid;
+    [SerializeField] MeshRenderer MeshSquid;
+
+    [Header("Death Centaur")]
+    [SerializeField] Material DeadMatBaseCentaur;
+    [SerializeField] Material[] DeadMatTorsoCentaur = new Material[2];
+    [SerializeField] MeshRenderer MeshTorsoCentaur;
+    [SerializeField] MeshRenderer MeshBaseCentaur;
+
     [Header("Sound")]
     [SerializeField] AudioSource Source;
     [SerializeField] AudioClip[] DamageFull;
@@ -114,6 +124,16 @@ public class HealthManager : MonoBehaviour
     {
         GameObject go = Instantiate(DeathSoundPlayer, gameObject.transform);
         go.GetComponent<EnnemiDeathSound>().Play(DeathSound);
+
+        if (DeadMatSquid != null)
+        {
+            MeshSquid.material = DeadMatSquid;
+        }
+        else if (DeadMatBaseCentaur != null)
+        {
+            MeshBaseCentaur.material = DeadMatBaseCentaur;
+            MeshTorsoCentaur.materials = DeadMatTorsoCentaur;
+        }
 
         Destroy(GetComponent<EnnemiBase>());
         Destroy(GetComponent<BoxCollider>());
