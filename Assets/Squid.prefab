@@ -5393,7 +5393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 0
-  MaxHealth: 15
+  MaxHealth: 12
   BlockAll: 0
   BlockHalf: 0
   BlockInfo: {fileID: 0}
