@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 13
-  AttackDamageMax: 13
+  AttackDamageMin: 8
+  AttackDamageMax: 8
   StunDuration: 0.6
   PropulsionForce: {x: -7.5, y: 2, z: 0}
   ScoreManager: {fileID: 5319182951862542789}
@@ -5581,7 +5581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -35}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8757172968603543703
@@ -5788,7 +5788,7 @@ MonoBehaviour:
   HealthManager: {fileID: 6103997516355074381}
   DurationBlockAll: 0.25
   CanBlock: 1
-  CdBlock: 0.2
+  CdBlock: 0.35
   PunchState: 0
   AttacksHitbox:
   - {fileID: 6792544397756318005}
@@ -6387,8 +6387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 8
-  AttackDamageMax: 8
+  AttackDamageMin: 13
+  AttackDamageMax: 13
   StunDuration: 0.6
   PropulsionForce: {x: -2, y: 6, z: 0}
   ScoreManager: {fileID: 5319182951862542789}
@@ -7418,8 +7418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 13
-  AttackDamageMax: 13
+  AttackDamageMin: 8
+  AttackDamageMax: 8
   StunDuration: 0.6
   PropulsionForce: {x: 7.5, y: 2, z: 0}
   ScoreManager: {fileID: 5319182951862542789}
@@ -7676,8 +7676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647c570990a393f4a97658e326a278cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamageMin: 8
-  AttackDamageMax: 8
+  AttackDamageMin: 13
+  AttackDamageMax: 13
   StunDuration: 0.6
   PropulsionForce: {x: 2, y: 6, z: 0}
   ScoreManager: {fileID: 5319182951862542789}

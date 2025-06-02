@@ -61,7 +61,7 @@ public class Finish : MonoBehaviour
         GameScore = ScoreManager.ScoreCalculator();
 
         EndStatus.text = endStatus;
-        if (endStatus == "LEVEL FINISHED !")
+        if (endStatus == "STAGE FINISHED !")
         {
             EndStatus.color = new Vector4(0.01579743f, 0.6698113f, 0.01579743f, 1);
             FinishSound.clip = SoundWin;
@@ -138,7 +138,7 @@ public class Finish : MonoBehaviour
     {
         if (other.gameObject.layer == 7)
         {
-            FinishGame("LEVEL FINISHED !");
+            FinishGame("STAGE FINISHED !");
         }
     }
 }
