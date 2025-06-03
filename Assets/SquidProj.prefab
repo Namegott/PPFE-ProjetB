@@ -709,7 +709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamageMin: 5
   AttackDamageMax: 5
-  StunDuration: 0.25
+  StunDuration: 0
   PropulsionForce: {x: 0, y: 0, z: 0}
   ScoreManager: {fileID: 0}
 --- !u!198 &8282287336073075789

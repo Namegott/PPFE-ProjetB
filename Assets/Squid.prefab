@@ -5446,8 +5446,8 @@ MonoBehaviour:
   DistanceAttackMax: 10
   DelaySetupMin: 0.15
   DelaySetupMax: 0.5
-  DelayPreAttack: 1.5
-  DelayPostAttack: 0.75
+  DelayPreAttack: 0.75
+  DelayPostAttack: 0.5
   NeedMove: 0
   MoveDestination: {fileID: 5102528625598105968, guid: 570c4845be020fa408b0332ade5b43aa, type: 3}
   Projectile: {fileID: 4796938416593202957, guid: 24c89ffb673b6dc49901dc8bb05c0614, type: 3}

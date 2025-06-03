@@ -5117,7 +5117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamageMin: 20
   AttackDamageMax: 20
-  StunDuration: 0.25
+  StunDuration: 0
   PropulsionForce: {x: 0, y: 0, z: 0}
   ScoreManager: {fileID: 0}
 --- !u!1 &3763661954895620861
@@ -34835,7 +34835,7 @@ MonoBehaviour:
   BlockHalf: 0
   BlockInfo: {fileID: 0}
   Invincibility: 0
-  InvincibilityTime: 0.5
+  InvincibilityTime: 0.4
   DamageGet: {fileID: 0}
   HpBar: {fileID: 0}
   ScoreManager: {fileID: 0}

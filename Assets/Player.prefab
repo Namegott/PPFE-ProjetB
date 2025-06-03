@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 401498168757728052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0.37100005, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0.371, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5801,8 +5801,8 @@ MonoBehaviour:
   - {fileID: 401498168757728052}
   AttacksDurations:
   - 0.15
-  - 0.3
-  - 0.4
+  - 0.6
+  - 0.5
   CanAttack: 1
   VisualState: 0
   GamePause: 0
@@ -7329,7 +7329,7 @@ Transform:
   m_GameObject: {fileID: 7614850017427928225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0.37100005, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0.371, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7420,7 +7420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamageMin: 8
   AttackDamageMax: 8
-  StunDuration: 0.6
+  StunDuration: 0.5
   PropulsionForce: {x: 7.5, y: 2, z: 0}
   ScoreManager: {fileID: 5319182951862542789}
 --- !u!1 &8701272701983365290
