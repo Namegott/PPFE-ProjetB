@@ -17,6 +17,7 @@ public class HealthManager : MonoBehaviour
     [SerializeField] float InvincibilityTime = 0.5f;
     [SerializeField] TextMeshPro DamageGet;
     [SerializeField] Image HpBar;
+    [SerializeField] GameObject BloodParticles;
 
     [SerializeField] ScoreManager ScoreManager;
     [SerializeField] int ScoreGain;
@@ -94,6 +95,15 @@ public class HealthManager : MonoBehaviour
                 {
                     ScoreManager.EndCombo();
                     UpdateLifeHUD();
+                }
+                else if (gameObject.layer == 6)
+                {
+                    Vector3 rota = Vector3.RotateTowards(transform.position, new Vector3(FindFirstObjectByType<VisualManager>().gameObject.transform.position.x, transform.position.y, FindFirstObjectByType<VisualManager>().gameObject.transform.position.z), 1,1);
+                    Debug.DrawRay(transform.position, rota, Color.red);
+                    Debug.Log(rota);
+
+                    Instantiate(BloodParticles, gameObject.transform.position, Quaternion.EulerAngles(rota));
+                    //BloodParticles.Play();
                 }
                 StartCoroutine(InvicibilityTimer());
             }
