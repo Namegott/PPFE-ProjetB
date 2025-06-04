@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
@@ -17,8 +16,20 @@ public class HealthManager : MonoBehaviour
     [SerializeField] float InvincibilityTime = 0.5f;
     [SerializeField] TextMeshPro DamageGet;
     [SerializeField] Image HpBar;
+    [SerializeField] Image OldHpBar;
     [SerializeField] GameObject BloodParticles;
+    [SerializeField] GameObject RotationReference;
 
+    [Header("Damage Material Flicker")]
+    float FlickerTime = 0.15f / 5;
+    [SerializeField] Material BaseMaterialSquid;
+    [SerializeField] Material BaseMaterialCentaurBase;
+    [SerializeField] Material BaseMaterialPlayer;
+    [SerializeField] Material[] BaseMaterialCentaurTorso, DamageMaterial;
+    [SerializeField] MeshRenderer[] VisualsSquid, VisualCentaurTorso, VisualCentaurBase;
+    [SerializeField] SkinnedMeshRenderer[] VisualsPlayers;
+
+    [Header("Score")]
     [SerializeField] ScoreManager ScoreManager;
     [SerializeField] int ScoreGain;
 
@@ -51,6 +62,26 @@ public class HealthManager : MonoBehaviour
     {
         Health = MaxHealth;
         ScoreManager = FindAnyObjectByType<ScoreManager>();
+        
+        if (gameObject.layer == 7)
+        {
+            VisualsPlayers = FindObjectsByType<SkinnedMeshRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        }
+    }
+
+    void Update()
+    {
+        if (HpBar != null)
+        {
+            if (HpBar.transform.localScale.x < OldHpBar.transform.localScale.x)
+            {
+                OldHpBar.transform.localScale = new Vector3(OldHpBar.transform.localScale.x - 0.001f, 1, 1);
+            }
+            else if (HpBar.transform.localScale.x > OldHpBar.transform.localScale.x)
+            {
+                OldHpBar.transform.localScale = HpBar.transform.localScale;
+            }
+        }
     }
 
     // Permet de setup les hp de chacun
@@ -68,6 +99,7 @@ public class HealthManager : MonoBehaviour
             if (BlockAll)
             {
                 Source.PlayOneShot(DamageBlock[Random.Range(0, DamageBlock.Length)], 0.25f);
+                //ScoreManager.AddCombo();
             }
             else if (BlockHalf) 
             {
@@ -78,6 +110,7 @@ public class HealthManager : MonoBehaviour
                 //DamageGet.text = damage.ToString();
                 if (gameObject.layer == 7)
                 {
+                    StartCoroutine(MaterialFlicker());
                     ScoreManager.EndCombo();
                     UpdateLifeHUD();
                 }
@@ -93,16 +126,26 @@ public class HealthManager : MonoBehaviour
 
                 if (gameObject.layer == 7)
                 {
+                    StartCoroutine(MaterialFlicker());
                     ScoreManager.EndCombo();
                     UpdateLifeHUD();
                 }
                 else if (gameObject.layer == 6)
                 {
-                    Vector3 rota = Vector3.RotateTowards(transform.position, new Vector3(FindFirstObjectByType<VisualManager>().gameObject.transform.position.x, transform.position.y, FindFirstObjectByType<VisualManager>().gameObject.transform.position.z), 1,1);
-                    Debug.DrawRay(transform.position, rota, Color.red);
-                    Debug.Log(rota);
+                    StartCoroutine(MaterialFlicker());
+                    //j'arrive pas a faire rotate la projection de particule a l'opposé de la d'ou vient le coup
+                    /*Vector3 damageOrigin = new Vector3(FindFirstObjectByType<VisualManager>().gameObject.transform.position.x, transform.position.y, FindFirstObjectByType<VisualManager>().gameObject.transform.position.z);
+                    Quaternion rota = Quaternion.LookRotation(damageOrigin);
 
-                    Instantiate(BloodParticles, gameObject.transform.position, Quaternion.EulerAngles(rota));
+                    Debug.Log("origine degats : " + damageOrigin + " / rotation particules : " + rota.eulerAngles);*/
+                    
+                    //Vector3 rota = Vector3.RotateTowards(transform.position, new Vector3(FindFirstObjectByType<VisualManager>().gameObject.transform.position.x, transform.position.y, FindFirstObjectByType<VisualManager>().gameObject.transform.position.z), 1,1);
+                    //Debug.DrawRay(transform.position, rota, Color.red);
+                    //Debug.Log(rota);
+
+                    /*GameObject blood = */Instantiate(BloodParticles, gameObject.transform.position, RotationReference.transform.rotation);
+                    /*blood.transform.rotation = Quaternion.LookRotation(FindFirstObjectByType<VisualManager>().gameObject.transform.position);
+                    blood.GetComponent<ParticleSystem>().Play();*/
                     //BloodParticles.Play();
                 }
                 StartCoroutine(InvicibilityTimer());
@@ -144,6 +187,8 @@ public class HealthManager : MonoBehaviour
             MeshBaseCentaur.material = DeadMatBaseCentaur;
             MeshTorsoCentaur.materials = DeadMatTorsoCentaur;
         }
+
+        FindAnyObjectByType<Finish>(FindObjectsInactive.Include).gameObject.SetActive(true);
 
         Destroy(GetComponent<EnnemiBase>());
         Destroy(GetComponent<BoxCollider>());
@@ -199,6 +244,120 @@ public class HealthManager : MonoBehaviour
             BlockAll = false;
             BlockHalf = true;
         }
+    }
+
+    IEnumerator MaterialFlicker()
+    {
+        //one
+        foreach (MeshRenderer visual in VisualsSquid)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        foreach (MeshRenderer visual in VisualCentaurBase)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        foreach (MeshRenderer visual in VisualCentaurTorso)
+        {
+            visual.materials = DamageMaterial;
+        }
+        foreach (SkinnedMeshRenderer visual in VisualsPlayers)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        yield return new WaitForSeconds(FlickerTime);
+
+        foreach (MeshRenderer visual in VisualsSquid)
+        {
+            visual.material = BaseMaterialSquid;
+        }
+        foreach (MeshRenderer visual in VisualCentaurBase)
+        {
+            visual.material = BaseMaterialCentaurBase;
+        }
+        foreach (MeshRenderer visual in VisualCentaurTorso)
+        {
+            visual.materials = BaseMaterialCentaurTorso;
+        }
+        foreach (SkinnedMeshRenderer visual in VisualsPlayers)
+        {
+            visual.material = BaseMaterialPlayer;
+        }
+        yield return new WaitForSeconds(FlickerTime);
+
+        //two
+        foreach (MeshRenderer visual in VisualsSquid)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        foreach (MeshRenderer visual in VisualCentaurBase)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        foreach (MeshRenderer visual in VisualCentaurTorso)
+        {
+            visual.materials = DamageMaterial;
+        }
+        foreach (SkinnedMeshRenderer visual in VisualsPlayers)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        yield return new WaitForSeconds(FlickerTime);
+
+        foreach (MeshRenderer visual in VisualsSquid)
+        {
+            visual.material = BaseMaterialSquid;
+        }
+        foreach (MeshRenderer visual in VisualCentaurBase)
+        {
+            visual.material = BaseMaterialCentaurBase;
+        }
+        foreach (MeshRenderer visual in VisualCentaurTorso)
+        {
+            visual.materials = BaseMaterialCentaurTorso;
+        }
+        foreach (SkinnedMeshRenderer visual in VisualsPlayers)
+        {
+            visual.material = BaseMaterialPlayer;
+        }
+        yield return new WaitForSeconds(FlickerTime);
+
+        //three
+        foreach (MeshRenderer visual in VisualsSquid)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        foreach (MeshRenderer visual in VisualCentaurBase)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        foreach (MeshRenderer visual in VisualCentaurTorso)
+        {
+            visual.materials = DamageMaterial;
+        }
+        foreach (SkinnedMeshRenderer visual in VisualsPlayers)
+        {
+            visual.material = DamageMaterial[0];
+        }
+        yield return new WaitForSeconds(FlickerTime);
+
+        foreach (MeshRenderer visual in VisualsSquid)
+        {
+            visual.material = BaseMaterialSquid;
+        }
+        foreach (MeshRenderer visual in VisualCentaurBase)
+        {
+            visual.material = BaseMaterialCentaurBase;
+        }
+        foreach (MeshRenderer visual in VisualCentaurTorso)
+        {
+            visual.materials = BaseMaterialCentaurTorso;
+        }
+        foreach (SkinnedMeshRenderer visual in VisualsPlayers)
+        {
+            visual.material = BaseMaterialPlayer;
+        }
+        yield return new WaitForSeconds(FlickerTime);
     }
 
     IEnumerator InvicibilityTimer()

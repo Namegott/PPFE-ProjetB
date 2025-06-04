@@ -62,7 +62,26 @@ public class EnnemiCentaurManager : EnnemiBase
 
         if (Attack)
         {
-            Rigidbody.velocity = Direction.normalized * AttackSpeed;
+            if (CanMove)
+            {
+                GetComponent<Collider>().isTrigger = true;
+                Rigidbody.useGravity = false;
+                if (Direction != Destination.transform.position - transform.position) //update the path
+                {
+                    Direction = Destination.transform.position - transform.position;
+                }
+                Rigidbody.velocity = Direction.normalized * AttackSpeed;
+            }
+            else if (GroundCheck.GetGrounded())
+            {
+                CanMove = true;
+            }
+            else
+            {
+                GetComponent<Collider>().isTrigger = false;
+                Rigidbody.useGravity = true;
+            }
+            
         }
         else if (NeedMove)
         {
@@ -220,7 +239,7 @@ public class EnnemiCentaurManager : EnnemiBase
         Vector3 target = transform.position + (transform.forward * (DistanceAttackMax * 1.5f));
         target.x = Mathf.Clamp(target.x, MapLimitX.x, MapLimitX.y);                                                         //pour pas sortir de la map
         target.z = Mathf.Clamp(target.z, MapLimitZ.x, MapLimitZ.y);
-        target = new Vector3(target.x, target.y, target.z);
+        target = new Vector3(target.x, 0, target.z);
 
         Destination = Instantiate(MoveDestination, target, Quaternion.identity);
         Direction = Destination.transform.position - transform.position;
