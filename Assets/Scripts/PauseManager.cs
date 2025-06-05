@@ -15,6 +15,8 @@ public class PauseManager : MonoBehaviour
     [SerializeField] GameObject ControlsMenu;
     [SerializeField] GameObject GlobalButtons;
 
+    [SerializeField] AudioLowPassFilter MusicPlayer;
+
     [Header("Event System & Button Navigation")]
     [SerializeField] EventSystem EventSystem;
     [SerializeField] Selectable ResumeButton;
@@ -55,7 +57,8 @@ public class PauseManager : MonoBehaviour
         {
             audio.Pause();
         }
-
+        MusicPlayer.GetComponent<AudioSource>().UnPause();
+        MusicPlayer.enabled = true;
         MovementManager.GamePause = true;
         CombatManager.GamePause = true;
         GlobalMenu.SetActive(true);
@@ -72,6 +75,8 @@ public class PauseManager : MonoBehaviour
             audio.UnPause();
         }
         AllAudio = null;
+
+        MusicPlayer.enabled = false;
 
         StopCoroutine(Animation);
         GlobalMenu.SetActive(false);

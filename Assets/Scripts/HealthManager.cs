@@ -20,6 +20,10 @@ public class HealthManager : MonoBehaviour
     [SerializeField] GameObject BloodParticles;
     [SerializeField] GameObject RotationReference;
 
+    [SerializeField] MeshRenderer[] GorillaMesh;
+    [SerializeField] Material GorillaFullBlock;
+    [SerializeField] Material GorillaHalfBlock;
+
     [Header("Damage Material Flicker")]
     float FlickerTime = 0.15f / 5;
     [SerializeField] Material BaseMaterialSquid;
@@ -62,11 +66,6 @@ public class HealthManager : MonoBehaviour
     {
         Health = MaxHealth;
         ScoreManager = FindAnyObjectByType<ScoreManager>();
-        
-        if (gameObject.layer == 7)
-        {
-            VisualsPlayers = FindObjectsByType<SkinnedMeshRenderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        }
     }
 
     void Update()
@@ -237,12 +236,22 @@ public class HealthManager : MonoBehaviour
 
     IEnumerator BlockTime(float durationBlockAll)
     {
+        foreach (MeshRenderer mesh in GorillaMesh)
+        {
+            mesh.material = GorillaFullBlock;
+        }
+
         yield return new WaitForSeconds(durationBlockAll);
         if (BlockAll)
         {
             BlockInfo.enabled = false;
             BlockAll = false;
             BlockHalf = true;
+
+            foreach (MeshRenderer mesh in GorillaMesh)
+            {
+                mesh.material = GorillaHalfBlock;
+            }
         }
     }
 
